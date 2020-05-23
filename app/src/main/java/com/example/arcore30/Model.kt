@@ -31,5 +31,16 @@ sealed class Model {
             get() = 180f
     }
 
+    object Skeb:Model(){
+        override val degresPerSeconds: Float
+            get() = 30f
+        override val radius: Float
+            get() = 1.5f
+        override val height: Float
+            get() = 0.7f
+        override val rotateToDegrees: Float
+            get() = 180f
+    }
+
 
 }

@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
 
-
-
     lateinit var arFragment: ArFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,37 +25,34 @@ class MainActivity : AppCompatActivity() {
         arFragment = fragment as ArFragment
 
         arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
-            Toast.makeText(this,"Get Click", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Get Click", Toast.LENGTH_LONG).show()
 
-            val randomId=R.raw.beedrill
+            // val randomId=R.raw.beedrill
+          //  val randomId = R.raw.fly   //fly  beautiful bird without color
+            val randomId = R.raw.skeb   // red eagle
 
-
-            // val randomId=modelResourceIds.random()
-
-            ////
-           // val randomId=R.raw.fly5
-            // //
-                          ////
-
-           loadModelAndAddToScene(hitResult.createAnchor(),randomId)
+            loadModelAndAddToScene(hitResult.createAnchor(), randomId)
 
         }
     }
-    private fun loadModelAndAddToScene(ancore: Anchor, modelResourceId:Int){
+
+    private fun loadModelAndAddToScene(ancore: Anchor, modelResourceId: Int) {
         ModelRenderable.builder()
-            .setSource(this,modelResourceId)
+            .setSource(this, modelResourceId)
             .build()
             .thenAccept {
-                val spaceShip= when (modelResourceId){
+                val spaceShip = when (modelResourceId) {
 
-                    R.raw.beedrill->Model.Bee
-                    else->Model.Bee
+                    R.raw.beedrill -> Model.Bee
+                    R.raw.fly -> Model.Fly  //fly  beautiful bird without color
+                    R.raw.skeb -> Model.Skeb // red eagle
+                    else -> Model.Bee
                 }
-                addNodeToScene(ancore,it,spaceShip)
-                Toast.makeText(this,"Loded", Toast.LENGTH_LONG).show()
+                addNodeToScene(ancore, it, spaceShip)
+                Toast.makeText(this, "Loded", Toast.LENGTH_LONG).show()
 
             }.exceptionally {
-                Toast.makeText(this,"Error in loading Model", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error in loading Model", Toast.LENGTH_LONG).show()
                 null
             }
 
@@ -69,13 +64,22 @@ class MainActivity : AppCompatActivity() {
         model: Model
     ) {
 
-        //bee
-        val speed=50f
-        val rotate=-90f
+        /* //bee
+         val speed=50f
+         val rotateX=-60f
+         val rotateY=0f
+         val rotateZ=0f*/
+       /* //fly  beautiful bird without color
+        val speed = 20f
+        val rotateX = 0f
+        val rotateY = 0f
+        val rotateZ = 0f*/
+        //skeb  red eagle
+        val speed = 40f
+        val rotateX = 0f
+        val rotateY = 0f
+        val rotateZ = 0f
 
-       /* //fly
-        val speed=50f
-        val rotate=-90f*/
 
         val anchorNode = AnchorNode(anchor)
         val rotatingNode = RotatingNode(speed).apply {
@@ -88,8 +92,7 @@ class MainActivity : AppCompatActivity() {
             // Y axis points Up !!!
 
 
-
-            localRotation = Quaternion.eulerAngles(Vector3(0f, rotate, 0f))
+            localRotation = Quaternion.eulerAngles(Vector3(rotateX, rotateY, rotateZ))
             startAnimation(renderable as ModelRenderable)
         }
         arFragment.arSceneView.scene.addChild(anchorNode)
@@ -99,24 +102,25 @@ class MainActivity : AppCompatActivity() {
     private fun startAnimation(renderable: ModelRenderable) {
 
 
-        val animationString="Beedrill_Animation"
+        // val animationString="Beedrill_Animation"
+      //  val animationString = "fly"
+        val animationString = "skeb"
 
         //  val animationString="skeb"
-        // val animationString="fly"
 
 
-             if (renderable.animationDataCount == 0) {
-                 return
-             }
-             val animationData = renderable.getAnimationData(animationString)
-             ModelAnimator(animationData, renderable).apply {
-                 repeatCount = ModelAnimator.INFINITE
-                 start()
-             }
-         }
-
-
+        if (renderable.animationDataCount == 0) {
+            return
+        }
+        val animationData = renderable.getAnimationData(animationString)
+        ModelAnimator(animationData, renderable).apply {
+            repeatCount = ModelAnimator.INFINITE
+            start()
+        }
     }
+
+
+}
 
 
 
